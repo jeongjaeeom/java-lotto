@@ -1,5 +1,7 @@
 package lotto.domain;
 
+import static java.util.regex.Pattern.matches;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -23,15 +25,32 @@ public class LottoNumber {
   }
 
   public static LottoNumber from(String number) {
+    validateEmpty(number);
+    validateNumeric(number);
     return from(Integer.parseInt(number.trim()));
   }
 
   public static LottoNumber from(int number) {
-    LottoNumber lottoNumber = cachedLottoNumbers.get(number);
-    if (lottoNumber == null) {
+    if (number < 1 || number > 45) {
       throw new IllegalArgumentException("로또번호가 1보다 작거나 45보다 클 수 없습니다.");
     }
-    return lottoNumber;
+    return cachedLottoNumbers.get(number);
+  }
+
+  private static void validateEmpty(String number) {
+    if (isBlank(number)) {
+      throw new IllegalArgumentException("로또 번호는 비어 있을 수 없습니다.");
+    }
+  }
+
+  private static void validateNumeric(String number) {
+    if (!matches("\\d+", number.trim())) {
+      throw new IllegalArgumentException("로또 번호는 숫자여야 합니다." + number);
+    }
+  }
+
+  private static boolean isBlank(String numbers) {
+    return numbers == null || numbers.isBlank();
   }
 
   @Override

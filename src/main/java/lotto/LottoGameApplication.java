@@ -1,7 +1,6 @@
 package lotto;
 
 import lotto.domain.LottoFactory;
-import lotto.domain.LottoGame;
 import lotto.domain.LottoNumber;
 import lotto.domain.LottoResult;
 import lotto.domain.LottoTicket;
@@ -24,9 +23,10 @@ public class LottoGameApplication {
     ResultView.print(money.countLotto(), manualNumber.number());
     ResultView.print(lottoTicket);
 
-    LottoResult lottoResult = LottoGame.match(lottoTicket, new WinLotto(
+    LottoResult lottoResult = lottoTicket.match(new WinLotto(
         LottoFactory.lotto(InputView.winLottoNumber()),
         LottoNumber.from(InputView.bonusNumber())));
+
     ResultView.print(lottoResult, money);
   }
 }
